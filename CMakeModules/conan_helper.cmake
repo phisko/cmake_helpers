@@ -20,5 +20,7 @@ macro(putils_conan)
             "lib, *.dll -> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}"
             "lib, *.dll -> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO}"
             "lib, *.dll -> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL}"
+        INSTALL_ARGS
+            -c tools.system.package_manager:mode=install
     )
 endmacro()
