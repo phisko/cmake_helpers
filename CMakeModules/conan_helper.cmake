@@ -154,3 +154,27 @@ function(putils_conan_link_packages_with_names target visibility customFindPacka
         target_link_libraries(${target} ${visibility} "${libraryName}::${libraryName}")
     endforeach()
 endfunction()
+
+# Generates an outOption variable containing Conan options specifying if libraries should be shared or not based on BUILD_SHARED_LIBS
+#   Usage:
+#       putils_conan_set_shared_options(options somePackage)
+#       putils_conan_download_and_link_packages(
+#               myTarget PRIVATE
+#               somePackage
+#               ${options}
+#       )
+function(putils_conan_set_shared_options outOptions)
+    set(options OPTIONS)
+
+    if (BUILD_SHARED_LIBS)
+        set(buildShared True)
+    else()
+        set(buildShared False)
+    endif()
+
+    foreach (package ${ARGN})
+        list(APPEND options ${package}:shared=${buildShared})
+    endforeach()
+
+    set(${outOptions} ${options} PARENT_SCOPE)
+endfunction()
