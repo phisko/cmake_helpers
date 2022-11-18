@@ -12,6 +12,7 @@ function(putils_add_test_executable test_exe_name)
 		gtest/1.12.1
 	)
 
+	cmake_policy(SET CMP0054 NEW)
 	include(GoogleTest)
-	gtest_discover_tests(${test_exe_name})
+	gtest_add_tests(TARGET ${test_exe_name})
 endfunction()
