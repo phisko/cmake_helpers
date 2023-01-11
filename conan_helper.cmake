@@ -1,4 +1,4 @@
-include(conan)
+include(conan.cmake)
 
 # Downloads the specified conan packages and links them against ${target} with the specified ${visibility}
 # Usage:

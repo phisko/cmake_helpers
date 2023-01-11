@@ -18,6 +18,8 @@ function(putils_export_symbols target)
         endif()
     endif()
 
+    set_target_properties(${target} PROPERTIES PUTILS_EXPORT_FILE_NAME ${EXPORT_FILE_NAME})
+
     # The header will be generated here, so add it to the include directories
     target_include_directories(${target} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
