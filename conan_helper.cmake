@@ -50,7 +50,8 @@ function(putils_conan_download_packages)
             "lib, *.dll -> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO}"
             "lib, *.dll -> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL}"
         GENERATORS
-            cmake_find_package_multi
+            CMakeDeps
+            CMakeToolchain
     )
     if(CMAKE_BUILD_TYPE)
         conan_cmake_autodetect(settings)
@@ -173,7 +174,7 @@ function(putils_conan_set_shared_options outOptions)
     endif()
 
     foreach (package ${ARGN})
-        list(APPEND options ${package}:shared=${buildShared})
+        list(APPEND options ${package}*:shared=${buildShared})
     endforeach()
 
     set(${outOptions} ${options} PARENT_SCOPE)
