@@ -117,6 +117,9 @@ function(putils_conan_link_packages_with_names target visibility customFindPacka
         string(FIND ${packageAndVersion} "/" slashIndex)
         string(SUBSTRING ${packageAndVersion} 0 ${slashIndex} packageName)
 
+        math(EXPR versionIndex "${slashIndex} + 1")
+        string(SUBSTRING ${packageAndVersion} ${versionIndex} -1 version)
+
         # The argument to find_package defaults to the package name
         set(findPackageName ${packageName})
 
@@ -151,8 +154,17 @@ function(putils_conan_link_packages_with_names target visibility customFindPacka
             endif()
         endforeach()
 
-        find_package(${findPackageName} CONFIG REQUIRED)
-        target_link_libraries(${target} ${visibility} "${libraryName}::${libraryName}")
+        if(NOT ${version} MATCHES "^[0-9.]+$")
+            unset(version)
+        endif()
+
+        find_package(${findPackageName} ${version} CONFIG REQUIRED)
+        if(TARGET "${libraryName}::${libraryName}")
+            set(libraryName "${libraryName}::${libraryName}")
+        elseif(NOT TARGET ${libraryName})
+            message(FATAL_ERROR "${libraryName} is not a target")
+        endif()
+        target_link_libraries(${target} ${visibility} ${libraryName})
     endforeach()
 endfunction()
 
